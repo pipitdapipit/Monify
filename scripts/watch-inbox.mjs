@@ -16,10 +16,10 @@ import ws from 'ws'
 import { importScreenshot } from '../lib/server/bankImport.js'
 import { HttpError } from '../lib/server/errors.js'
 import { loadUserLists } from '../lib/server/userData.js'
-import { isStable, listInbox, moveTo } from './inboxFiles.mjs'
+import { isStable, listInbox } from './inboxFiles.mjs'
+import { createProcessor } from './inboxProcessor.mjs'
 
 const POLL_MS = 5_000
-const MAX_ATTEMPTS = 3
 const REQUIRED_ENV = [
   'AI_API_KEY',
   'NEXT_PUBLIC_SUPABASE_URL',
@@ -59,41 +59,17 @@ console.log(`Memantau ${inbox}`)
 console.log(`Login sebagai ${process.env.MONIFY_EMAIL}. Tekan Ctrl+C untuk berhenti.\n`)
 
 const sizes = new Map() // nama -> ukuran di pengecekan sebelumnya
-const attempts = new Map() // nama -> jumlah gagal sementara
-
-async function processFile(name, lists) {
-  const buffer = await fs.readFile(path.join(inbox, name))
-  let result
-  try {
-    result = await importScreenshot({ buffer, supabase, lists })
-  } catch (err) {
-    const n = (attempts.get(name) || 0) + 1
-    const message = err instanceof HttpError ? err.message : 'kesalahan tidak terduga'
-    if (n < MAX_ATTEMPTS) {
-      attempts.set(name, n)
-      console.log(`… ${name} → gagal sementara (${message}), dicoba lagi (${n}/${MAX_ATTEMPTS})`)
-      return
-    }
-    attempts.delete(name)
-    await moveTo(inbox, name, reviewDir, `Gagal ${MAX_ATTEMPTS} kali: ${message}`)
-    console.log(`⚠ ${name} → perlu dicek: gagal ${MAX_ATTEMPTS} kali (${message})`)
-    return
-  }
-
-  attempts.delete(name)
-  if (result.status === 'review') {
-    await moveTo(inbox, name, reviewDir, result.reason)
-    console.log(`⚠ ${name} → perlu dicek: ${result.reason}`)
-    return
-  }
-  await moveTo(inbox, name, doneDir)
-  const dropped = result.dropped > 0 ? `, ${result.dropped} baris tidak terbaca` : ''
-  console.log(`✓ ${name} → ${result.inserted} baru, ${result.skipped} sudah ada (${result.wallet})${dropped}`)
-}
+const processor = createProcessor({
+  inbox,
+  doneDir,
+  reviewDir,
+  importFile: (buffer, lists) => importScreenshot({ buffer, supabase, lists }),
+})
 
 async function tick() {
   const names = await listInbox(inbox)
   for (const name of sizes.keys()) if (!names.includes(name)) sizes.delete(name)
+  processor.prune(names)
 
   // Hanya file yang ukurannya sudah stabil (selesai ditulis) yang diproses
   const ready = []
@@ -110,15 +86,8 @@ async function tick() {
 
   // Dimuat ulang tiap putaran, supaya dompet / kategori baru langsung terpakai
   const lists = await loadUserLists(supabase)
-  for (const name of ready) {
-    try {
-      await processFile(name, lists)
-    } catch (err) {
-      if (err.code !== 'ENOENT') throw err
-      console.log(`${name} sudah tidak ada, dilewati`)
-    }
-    sizes.delete(name)
-  }
+  // handle() tidak melempar error: satu file bermasalah tidak menghentikan file lain
+  for (const name of ready) await processor.handle(name, lists)
 }
 
 // setTimeout setelah putaran selesai (bukan setInterval), supaya putaran tidak tumpang-tindih.
