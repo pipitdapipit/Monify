@@ -27,9 +27,25 @@ Perintah lain:
 
 - `npm run build`: build produksi
 - `npm start`: jalankan hasil build
-- `npm test`: tes unit (`node --test`, semua file `*.test.js`)
+- `npm test`: tes unit (`node --test`, semua file `*.test.js` / `*.test.mjs`)
 - `npm run test:receipt -- path/ke/struk.jpg`: uji OCR + AI pada satu gambar struk
   (mencetak teks OCR ke terminal; perlu `AI_API_KEY`)
+- `npm run watch`: folder inbox screenshot bank (lihat di bawah)
+
+### Folder inbox screenshot bank
+
+`npm run watch` memantau folder `Pictures\Monify Inbox` (atau `MONIFY_INBOX`). Screenshot
+aplikasi bank / e-wallet yang ditaruh di sana, baik bukti transfer maupun daftar mutasi, dibaca
+(OCR + AI) dan transaksinya langsung disimpan ke akunmu. Dompet dipilih dari nama bank di
+screenshot, jadi nama dompet di Monify harus sama dengan nama banknya (mis. `BCA`, `SeaBank`).
+
+- Berhasil → file pindah ke `selesai/`.
+- Tidak bisa disimpan (bank tidak dikenali, tidak terbaca, AI ragu) → file pindah ke
+  `perlu-dicek/` bersama `<nama>.txt` berisi alasannya. Input transaksinya manual di web.
+- Screenshot yang sama atau tumpang-tindih tidak membuat transaksi ganda.
+
+Skrip login memakai `MONIFY_EMAIL` dan `MONIFY_PASSWORD`, jadi **password akunmu tersimpan
+sebagai teks biasa** di `.env.local`. File itu tidak ikut git, tapi jangan dibagikan.
 
 ## Variabel lingkungan
 
@@ -43,6 +59,9 @@ Perintah lain:
 | `AI_API_KEY` | Key penyedia AI. **Hanya server**, jangan diberi prefix `NEXT_PUBLIC_`. |
 | `OCR_LANGUAGE` | Opsional. Bahasa OCR Tesseract, default `eng`. |
 | `RECEIPT_VISION_FALLBACK` | `true` = struk yang gagal dibaca OCR dikirim sebagai gambar ke model vision (lebih mahal). |
+| `MONIFY_INBOX` | Opsional, hanya `npm run watch`. Lokasi folder inbox, default `Pictures\Monify Inbox`. |
+| `MONIFY_EMAIL` | Hanya `npm run watch`. Email akun Monify. Jangan diisi di Vercel. |
+| `MONIFY_PASSWORD` | Hanya `npm run watch`. Password akun Monify. Jangan diisi di Vercel. |
 
 **Jangan taruh** secret key (`sb_secret_...` / `service_role`) atau connection
 string database di sini. Semua variabel `NEXT_PUBLIC_*` terkirim ke browser.

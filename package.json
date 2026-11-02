@@ -8,7 +8,8 @@
     "build": "next build",
     "start": "next start",
     "test": "node --conditions=react-server --test",
-    "test:receipt": "node --conditions=react-server --env-file=.env.local scripts/receipt-cli.mjs"
+    "test:receipt": "node --conditions=react-server --env-file=.env.local scripts/receipt-cli.mjs",
+    "watch": "node --conditions=react-server --env-file=.env.local scripts/watch-inbox.mjs"
   },
   "engines": {
     "node": ">=20.9"
