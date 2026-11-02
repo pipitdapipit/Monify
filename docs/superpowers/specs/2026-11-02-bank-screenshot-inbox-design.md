@@ -101,7 +101,9 @@ Monify Inbox/            screenshot baru ditaruh di sini (antrian)
 4. **Validasi output AI** (zod, dianggap tidak tepercaya). Per baris:
    - `amount` bilangan bulat > 0 dan ≤ batas `MAX_RUPIAH` yang sudah ada; selain itu baris dibuang.
    - `type` harus `income`/`expense`; selain itu baris dibuang.
-   - `date` lewat `validDateOrToday` (tanggal tidak valid / masa depan → hari ini).
+   - `date` harus tanggal valid yang tidak di masa depan; kosong / tidak valid / masa depan → baris
+     dibuang (bukan diganti hari ini, karena itu menyimpan di tanggal salah dan lolos dari cek
+     duplikat keesokan harinya). Tahun yang tidak tertulis dipilih supaya tidak lewat dari hari ini.
    - `description` dipotong maksimal 60 karakter, jadi `note`.
    Baris yang dibuang dihitung dan disebut di log.
 5. **Pencocokan dompet oleh kode, bukan AI.** `bank` dan nama setiap dompet dinormalisasi
@@ -157,7 +159,8 @@ kunci tidak termasuk versi pertama.
 | Jenis | Contoh | Tindakan |
 |---|---|---|
 | Masalah file | bukan gambar, > 4 MB, teks tidak terbaca, bank tidak dikenali, confidence rendah, tidak ada baris valid, tidak ada kategori "Lainnya" | pindah ke `perlu-dicek/` + `<nama>.txt` berisi alasan |
-| Sementara | AI sibuk / timeout (`retryable`, 5xx), internet putus, Supabase error saat query/insert | file tetap di folder utama, dicoba di putaran berikutnya; setelah gagal 3 kali → `perlu-dicek/` |
+| Sementara | AI sibuk / timeout (`retryable`, 5xx), internet putus, Supabase error saat query/insert, error tak terduga | file tetap di folder utama, dicoba lagi setelah 1 menit lalu 5 menit; gagal ke-3 → `perlu-dicek/` |
+| Gagal memindah | file dikunci viewer / OneDrive / antivirus | transaksi yang sudah tersimpan tidak diimpor ulang; hanya pemindahan file yang dicoba lagi |
 | Fatal | env wajib kosong (`AI_API_KEY`, `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, `MONIFY_EMAIL`, `MONIFY_PASSWORD`), login gagal | skrip berhenti dengan pesan jelas, tidak ada file yang dipindah |
 
 Hitungan percobaan disimpan di memori skrip (hilang saat skrip restart, dan itu tidak masalah).
