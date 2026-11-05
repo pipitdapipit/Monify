@@ -5,6 +5,7 @@ import { getSettings, updateSettings } from '@/lib/api/settings'
 import { useAuth } from '@/context/AuthContext'
 import { useTheme } from '@/context/ThemeContext'
 import { useApi } from '@/hooks/useApi'
+import ApiKeys from '@/components/ApiKeys'
 import Button from '@/components/ui/Button'
 import Icon from '@/components/ui/Icon'
 import Skeleton from '@/components/ui/Skeleton'
@@ -125,6 +126,8 @@ export default function Settings() {
           </form>
         )}
       </section>
+
+      <ApiKeys />
 
       <Button variant="secondary" onClick={logout} className="w-full text-red-600">
         <Icon name="logout" className="h-5 w-5" />
