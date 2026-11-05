@@ -15,6 +15,7 @@ import { createClient } from '@supabase/supabase-js'
 import ws from 'ws'
 import { importScreenshot } from '../lib/server/bankImport.js'
 import { HttpError } from '../lib/server/errors.js'
+import { supabaseStore } from '../lib/server/importStores.js'
 import { loadUserLists } from '../lib/server/userData.js'
 import { isStable, listInbox } from './inboxFiles.mjs'
 import { createProcessor } from './inboxProcessor.mjs'
@@ -58,12 +59,13 @@ await fs.mkdir(reviewDir, { recursive: true })
 console.log(`Memantau ${inbox}`)
 console.log(`Login sebagai ${process.env.MONIFY_EMAIL}. Tekan Ctrl+C untuk berhenti.\n`)
 
+const store = supabaseStore(supabase)
 const sizes = new Map() // nama -> ukuran di pengecekan sebelumnya
 const processor = createProcessor({
   inbox,
   doneDir,
   reviewDir,
-  importFile: (buffer, lists) => importScreenshot({ buffer, supabase, lists }),
+  importFile: (buffer, lists) => importScreenshot({ buffer, store, lists }),
 })
 
 async function tick() {
