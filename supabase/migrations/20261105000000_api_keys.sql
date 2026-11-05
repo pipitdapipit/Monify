@@ -91,16 +91,29 @@ end;
 $$;
 
 -- Existing transactions of the key's owner in one wallet + date range (duplicate check).
-create or replace function public.api_key_existing(p_key text, p_wallet_id uuid, p_from date, p_to date)
+-- The key is checked first, always. The range is capped (a screenshot spans a few days),
+-- so a leaked key cannot be used to download the owner's whole history.
+drop function if exists public.api_key_existing(text, uuid, date, date);
+create function public.api_key_existing(p_key text, p_wallet_id uuid, p_from date, p_to date)
 returns table (date date, type text, amount bigint)
-language sql stable security definer
+language plpgsql stable security definer
 set search_path = ''
 as $$
-  select t.date, t.type, t.amount
-  from public.transactions t
-  where t.user_id = public.api_key_owner(p_key)
-    and t.wallet_id = p_wallet_id
-    and t.date between p_from and p_to;
+declare
+  v_user uuid := public.api_key_owner(p_key);
+begin
+  if p_from is null or p_to is null or p_to < p_from or p_to - p_from > 62
+     or p_from < (now() at time zone 'Asia/Jakarta')::date - 400 then
+    raise exception 'date range must be at most 62 days within the last 400 days' using errcode = '22023';
+  end if;
+
+  return query
+    select t.date, t.type, t.amount
+    from public.transactions t
+    where t.user_id = v_user
+      and t.wallet_id = p_wallet_id
+      and t.date between p_from and p_to;
+end;
 $$;
 
 -- Insert 1-50 rows for the key's owner. All rows or none.

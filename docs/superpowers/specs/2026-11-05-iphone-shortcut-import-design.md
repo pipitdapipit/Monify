@@ -20,7 +20,12 @@ Kriteria berhasil:
 
 Di luar cakupan versi pertama:
 - Trigger otomatis saat screenshot masuk galeri (tidak didukung iOS).
-- Hak akses per key (scope). Key hanya bisa dipakai untuk endpoint import ini.
+- Hak akses per key (scope) dan rate limit di database. Fungsi `api_key_*` bisa dipanggil
+  langsung lewat PostgREST dengan publishable key, jadi key yang bocor bisa: membaca daftar
+  dompet / kategori, membaca tanggal + jenis + nominal transaksi per dompet dalam 400 hari
+  terakhir (maksimal 62 hari per panggilan, tanpa keterangan), dan menambah transaksi.
+  Tidak bisa mengubah / menghapus data, membaca keterangan, atau menyentuh data user lain.
+  Penanganannya: hapus key di Pengaturan (langsung tidak berlaku).
 - Masa berlaku key. Key berlaku sampai dihapus.
 - Antrean / retry di server. Kalau gagal sementara (AI sibuk), user cukup ketuk lagi.
 - Mengirim file `.shortcut` jadi. Yang disediakan adalah panduan langkah demi langkah.
