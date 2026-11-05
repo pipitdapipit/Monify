@@ -159,11 +159,12 @@ akses data di `lib/api/apiKeys.js` (Supabase langsung dari browser, RLS):
 Di bawah daftar key, langkah singkat (bisa dibuka-tutup):
 1. Shortcuts → buat shortcut baru "Kirim ke Monify".
 2. **Take Screenshot**.
-3. **Get Contents of URL**: URL `https://<domain>/api/import/bank-screenshot` (domain diisi
+3. **Convert Image** → JPEG (screenshot PNG iPhone besar bisa melewati batas body Vercel 4,5 MB).
+4. **Get Contents of URL**: URL `https://<domain>/api/import/bank-screenshot` (domain diisi
    otomatis dari `window.location.origin`), Method POST, Header
-   `Authorization: Bearer <key>`, Request Body **Form**, field `image` = Screenshot.
-4. **Get Dictionary Value** `message` → **Show Notification**.
-5. Settings → Accessibility → Touch → Back Tap → Double Tap → "Kirim ke Monify".
+   `Authorization: Bearer <key>`, Request Body **Form**, field `image` = hasil Convert Image.
+5. **Get Dictionary Value** `message` → **Show Notification**.
+6. Settings → Accessibility → Touch → Back Tap → Double Tap → "Kirim ke Monify".
 
 ## Penanganan error
 
