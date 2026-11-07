@@ -1,11 +1,12 @@
-import { Inter } from 'next/font/google'
+import { IBM_Plex_Mono, Space_Grotesk } from 'next/font/google'
 import { AuthProvider } from '@/context/AuthContext'
 import { FlashProvider } from '@/context/FlashContext'
 import { ThemeProvider } from '@/context/ThemeContext'
 import { THEME_KEY } from '@/utils/theme'
 import './globals.css'
 
-const inter = Inter({ subsets: ['latin'], weight: ['400', '500', '600', '700'], variable: '--font-inter' })
+const grotesk = Space_Grotesk({ subsets: ['latin'], variable: '--font-grotesk' })
+const plexMono = IBM_Plex_Mono({ subsets: ['latin'], weight: ['400', '500'], variable: '--font-plex-mono' })
 
 export const metadata = {
   title: 'Monify',
@@ -13,7 +14,7 @@ export const metadata = {
 }
 
 export const viewport = {
-  themeColor: '#0d9488',
+  themeColor: '#fbfbf8',
 }
 
 // Pasang tema sebelum halaman tampil, supaya tidak berkedip putih saat refresh
@@ -26,7 +27,7 @@ const themeScript = `try {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="id" className={inter.variable} suppressHydrationWarning>
+    <html lang="id" className={`${grotesk.variable} ${plexMono.variable}`} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>

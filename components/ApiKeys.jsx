@@ -45,7 +45,7 @@ function CopyButton({ text, label = 'Salin' }) {
 export default function ApiKeys() {
   if (USE_MOCK) {
     return (
-      <section className="rounded-2xl bg-white p-4 shadow-sm">
+      <section className=" py-1">
         <p className="mb-1 text-sm font-medium text-slate-700">Shortcut iPhone</p>
         <p className="text-sm text-slate-500">Fitur ini hanya tersedia dengan Supabase.</p>
       </section>
@@ -102,7 +102,7 @@ function ApiKeysManager() {
   }
 
   return (
-    <section className="flex flex-col gap-3 rounded-2xl bg-white p-4 shadow-sm">
+    <section className="flex flex-col gap-3 py-1">
       <div>
         <p className="text-sm font-medium text-slate-700">Shortcut iPhone</p>
         <p className="text-xs text-slate-500">
@@ -119,7 +119,7 @@ function ApiKeysManager() {
       ) : keys.length === 0 ? (
         <p className="text-sm text-slate-500">Belum ada key.</p>
       ) : (
-        <ul className="flex flex-col divide-y divide-slate-100">
+        <ul className="flex flex-col divide-y divide-slate-200">
           {keys.map((k) => (
             <li key={k.id} className="flex items-center gap-3 py-2">
               <div className="min-w-0 flex-1">
@@ -149,7 +149,7 @@ function ApiKeysManager() {
         <div className="flex flex-col gap-2 rounded-xl border border-amber-200 bg-amber-50 p-3">
           <p className="text-sm font-medium text-amber-800">Simpan sekarang. Key ini tidak bisa dilihat lagi.</p>
           <div className="flex items-center gap-2">
-            <code className="min-w-0 flex-1 break-all rounded-lg bg-white px-2 py-1.5 font-mono text-xs">{newKey}</code>
+            <code className="min-w-0 flex-1 break-all rounded-lg bg-surface px-2 py-1.5 font-mono text-xs">{newKey}</code>
             <CopyButton text={newKey} />
           </div>
           <Button variant="ghost" onClick={() => setNewKey('')} className="self-end py-1.5 text-xs">

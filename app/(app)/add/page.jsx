@@ -85,18 +85,18 @@ function AddTransaction() {
 
   return (
     <div className="flex flex-col gap-4">
-      <h1 className="text-xl font-bold">Tambah Transaksi</h1>
+      <h1 className="text-3xl font-bold tracking-tighter">Tambah Transaksi</h1>
 
-      <div className="grid grid-cols-2 gap-1 rounded-xl bg-slate-200/60 p-1">
+      <div className="grid grid-cols-2 gap-1 rounded-full border border-line p-1">
         {[
-          { value: 'ai', label: '✨ Ketik bebas' },
+          { value: 'ai', label: 'Ketik bebas' },
           { value: 'manual', label: 'Isi manual' },
         ].map((tab) => (
           <button
             key={tab.value}
             onClick={() => setMode(tab.value)}
-            className={`rounded-lg py-2 text-sm font-semibold ${
-              mode === tab.value ? 'bg-white text-teal-700 shadow-sm' : 'text-slate-500'
+            className={`rounded-full py-1.5 text-sm font-semibold ${
+              mode === tab.value ? 'bg-ink text-surface' : 'text-mute'
             }`}
           >
             {tab.label}
@@ -105,7 +105,7 @@ function AddTransaction() {
       </div>
 
       {mode === 'ai' ? (
-        <div className="flex flex-col gap-4 rounded-2xl bg-white p-4 shadow-sm">
+        <div className="flex flex-col gap-4 py-1">
           <form onSubmit={handleParseSubmit} className="flex flex-col gap-3">
             <label htmlFor="ai-text" className="text-sm font-medium text-slate-700">
               Tulis transaksimu seperti chat biasa
@@ -150,7 +150,7 @@ function AddTransaction() {
           </Link>
         </div>
       ) : (
-        <div className="rounded-2xl bg-white p-4 shadow-sm">
+        <div className=" py-1">
           <TransactionForm onSubmit={handleManualSubmit} submitting={savingManual} error={manualError} />
         </div>
       )}

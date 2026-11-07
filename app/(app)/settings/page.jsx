@@ -13,9 +13,9 @@ import ErrorState from '@/components/ui/ErrorState'
 import Field, { fieldClass } from '@/components/ui/Field'
 
 const themeOptions = [
-  { value: 'light', label: 'Terang', icon: 'sun' },
-  { value: 'dark', label: 'Gelap', icon: 'moon' },
-  { value: 'system', label: 'Sistem', icon: 'computer' },
+  { value: 'light', label: 'Putih' },
+  { value: 'dark', label: 'Hitam' },
+  { value: 'system', label: 'Sistem' },
 ]
 
 // [1, 2, ..., 31]
@@ -56,37 +56,34 @@ export default function Settings() {
 
   return (
     <div className="flex flex-col gap-4">
-      <h1 className="text-xl font-bold">Pengaturan</h1>
+      <h1 className="text-3xl font-bold tracking-tighter">Pengaturan</h1>
 
-      <div className="rounded-2xl bg-white p-4 shadow-sm">
+      <div className=" py-1">
         <p className="text-sm text-slate-500">Masuk sebagai</p>
         <p className="font-semibold">{user?.name}</p>
         <p className="text-sm text-slate-500">{user?.email}</p>
       </div>
 
-      <section className="rounded-2xl bg-white p-4 shadow-sm">
+      <section className=" py-1">
         <p className="mb-2 text-sm font-medium text-slate-700">Tampilan</p>
-        <div role="radiogroup" aria-label="Tema" className="grid grid-cols-3 gap-2">
+        <div role="radiogroup" aria-label="Tema" className="grid grid-cols-3 gap-1 rounded-full border border-line p-1">
           {themeOptions.map((option) => (
             <button
               key={option.value}
               role="radio"
               aria-checked={theme === option.value}
               onClick={() => setTheme(option.value)}
-              className={`flex flex-col items-center gap-1 rounded-xl border py-3 text-sm font-medium ${
-                theme === option.value
-                  ? 'border-teal-600 bg-teal-50 text-teal-700'
-                  : 'border-slate-200 text-slate-600 hover:bg-slate-50'
+              className={`rounded-full py-1.5 text-sm font-semibold ${
+                theme === option.value ? 'bg-ink text-surface' : 'text-mute'
               }`}
             >
-              <Icon name={option.icon} className="h-5 w-5" />
               {option.label}
             </button>
           ))}
         </div>
       </section>
 
-      <section className="rounded-2xl bg-white p-4 shadow-sm">
+      <section className=" py-1">
         {error ? (
           <ErrorState message={error.message} onRetry={refetch} />
         ) : loading && !data ? (

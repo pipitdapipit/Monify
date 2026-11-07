@@ -5,7 +5,7 @@ import { getOverview, getSafeToSpend } from '@/lib/api/summary'
 import { useApi } from '@/hooks/useApi'
 import { formatDate, monthRange, todayISO } from '@/utils/date'
 import { formatRupiah } from '@/utils/formatRupiah'
-import CategoryDonut from '@/components/CategoryDonut'
+import CategoryBars from '@/components/CategoryBars'
 import DailyExpenseChart from '@/components/DailyExpenseChart'
 import Skeleton from '@/components/ui/Skeleton'
 import ErrorState from '@/components/ui/ErrorState'
@@ -50,7 +50,7 @@ export default function Reports() {
 
   return (
     <div className="flex flex-col gap-4">
-      <h1 className="text-xl font-bold">Laporan</h1>
+      <h1 className="text-3xl font-bold tracking-tighter">Laporan</h1>
 
       {/* Pemilih periode */}
       <div className="-mx-4 flex gap-2 overflow-x-auto px-4 md:mx-0 md:px-0">
@@ -59,7 +59,7 @@ export default function Reports() {
             key={p.value}
             onClick={() => setPeriod(p.value)}
             className={`shrink-0 rounded-full px-4 py-1.5 text-sm font-medium ${
-              period === p.value ? 'bg-teal-600 text-white' : 'bg-white text-slate-600 shadow-sm'
+              period === p.value ? 'bg-ink text-surface' : 'border border-line text-mute'
             }`}
           >
             {p.label}
@@ -120,26 +120,26 @@ export default function Reports() {
       ) : (
         <>
           <div className="grid grid-cols-2 gap-3">
-            <div className="rounded-2xl bg-white p-4 shadow-sm">
+            <div className=" py-1">
               <p className="text-xs text-slate-500">Pemasukan</p>
               <p className="mt-1 text-lg font-bold text-green-600">{formatRupiah(data.total_income)}</p>
             </div>
-            <div className="rounded-2xl bg-white p-4 shadow-sm">
+            <div className=" py-1">
               <p className="text-xs text-slate-500">Pengeluaran</p>
-              <p className="mt-1 text-lg font-bold text-red-600">{formatRupiah(data.total_expense)}</p>
+              <p className="mt-1 text-lg font-bold">{formatRupiah(data.total_expense)}</p>
             </div>
           </div>
 
-          <section className="rounded-2xl bg-white p-4 shadow-sm">
+          <section className=" py-1">
             <h2 className="mb-2 font-semibold text-slate-700">Pengeluaran per kategori</h2>
             {data.by_category.length === 0 ? (
               <p className="py-6 text-center text-sm text-slate-500">Tidak ada pengeluaran di periode ini.</p>
             ) : (
-              <CategoryDonut data={data.by_category} total={data.total_expense} />
+              <CategoryBars data={data.by_category} />
             )}
           </section>
 
-          <section className="rounded-2xl bg-white p-4 shadow-sm">
+          <section className=" py-1">
             <h2 className="mb-2 font-semibold text-slate-700">Pengeluaran harian</h2>
             <DailyExpenseChart data={data.daily} />
           </section>

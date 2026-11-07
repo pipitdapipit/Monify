@@ -16,7 +16,7 @@ export default function AmountInput({ id, value, onChange, error, highlight, aut
 
   return (
     <div className="relative">
-      <span className="pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 text-sm text-slate-500">Rp</span>
+      <span className="pointer-events-none absolute top-1/2 left-0 -translate-y-1/2 text-lg text-mute">Rp</span>
       <input
         id={id}
         inputMode="numeric"
@@ -25,7 +25,7 @@ export default function AmountInput({ id, value, onChange, error, highlight, aut
         placeholder="0"
         value={value ? formatThousands(value) : ''}
         onChange={handleChange}
-        className={`${fieldClass(error, highlight)} pl-10 text-base font-semibold`}
+        className={`${fieldClass(error, highlight)} pl-9 text-3xl font-extrabold tracking-tight`}
       />
     </div>
   )

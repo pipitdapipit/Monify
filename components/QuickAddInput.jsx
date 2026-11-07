@@ -18,31 +18,24 @@ export default function QuickAddInput({ onSubmit, disabled = false }) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex items-center gap-2 rounded-2xl bg-white p-2 shadow-sm">
-      <Icon name="sparkles" className="ml-2 h-5 w-5 shrink-0 text-teal-600" />
+    <form onSubmit={handleSubmit} className="flex items-center gap-1 rounded-full border-[1.5px] border-ink bg-surface py-1 pr-1 pl-4">
       <input
         value={text}
         onChange={(e) => setText(e.target.value)}
-        placeholder='Coba: "makan siang 25rb gofood"'
+        placeholder="Catat, misalnya kopi 25rb"
         aria-label="Catat transaksi cepat"
         disabled={disabled}
-        className="min-w-0 flex-1 bg-transparent py-2 text-sm outline-none placeholder:text-slate-400"
+        className="min-w-0 flex-1 bg-transparent py-1.5 text-base outline-none placeholder:text-mute"
       />
-      <Link
-        href="/receipt"
-        aria-label="Scan struk"
-        className="rounded-xl p-2 text-slate-500 hover:bg-slate-100"
-      >
-        <Icon name="camera" className="h-5 w-5" />
-      </Link>
-      <button
-        type="submit"
-        aria-label="Kirim"
-        disabled={disabled || !text.trim()}
-        className="rounded-xl bg-teal-600 p-2 text-white disabled:bg-teal-300"
-      >
-        <Icon name="send" className="h-5 w-5" />
-      </button>
+      {text.trim() ? (
+        <button type="submit" aria-label="Kirim" disabled={disabled} className="rounded-full bg-acc p-2 text-on-acc">
+          <Icon name="send" className="h-4 w-4" />
+        </button>
+      ) : (
+        <Link href="/receipt" aria-label="Scan struk" className="rounded-full p-2 text-mute hover:bg-soft">
+          <Icon name="camera" className="h-5 w-5" />
+        </Link>
+      )}
     </form>
   )
 }

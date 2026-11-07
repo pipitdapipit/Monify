@@ -79,16 +79,16 @@ export default function TransactionForm({
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-4" noValidate>
       {/* Pilihan jenis: pengeluaran / pemasukan */}
-      <div className="grid grid-cols-2 gap-1 rounded-xl bg-slate-100 p-1">
+      <div className="grid grid-cols-2 gap-1 rounded-full border border-line p-1">
         {[
-          { value: 'expense', label: 'Pengeluaran', active: 'bg-white text-red-600 shadow-sm' },
-          { value: 'income', label: 'Pemasukan', active: 'bg-white text-green-600 shadow-sm' },
+          { value: 'expense', label: 'Pengeluaran', active: 'bg-ink text-surface' },
+          { value: 'income', label: 'Pemasukan', active: 'bg-ink text-surface' },
         ].map((option) => (
           <button
             key={option.value}
             type="button"
             onClick={() => changeType(option.value)}
-            className={`rounded-lg py-2 text-sm font-semibold ${
+            className={`rounded-full py-1.5 text-sm font-semibold ${
               form.type === option.value ? option.active : 'text-slate-500'
             }`}
           >

@@ -100,14 +100,14 @@ export default function Transactions() {
   return (
     <div className="flex flex-col gap-4">
       <div className="flex items-center justify-between">
-        <h1 className="text-xl font-bold">Transaksi</h1>
+        <h1 className="text-3xl font-bold tracking-tighter">Transaksi</h1>
         <Link href="/add" className="flex items-center gap-1 text-sm font-semibold text-teal-700">
           <Icon name="plus" className="h-4 w-4" /> Tambah
         </Link>
       </div>
 
       {/* Filter */}
-      <div className="flex flex-col gap-3 rounded-2xl bg-white p-4 shadow-sm">
+      <div className="flex flex-col gap-3 py-1">
         <div className="relative">
           <Icon name="search" className="pointer-events-none absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-slate-400" />
           <input
@@ -163,7 +163,7 @@ export default function Transactions() {
       {error ? (
         <ErrorState message={error.message} onRetry={refetch} />
       ) : loading ? (
-        <div className="flex flex-col gap-3 rounded-2xl bg-white p-4 shadow-sm">
+        <div className="flex flex-col gap-3 py-1">
           {[1, 2, 3, 4, 5].map((i) => (
             <Skeleton key={i} className="h-10" />
           ))}
@@ -183,7 +183,7 @@ export default function Transactions() {
             <h2 className="mb-1 px-1 text-xs font-semibold tracking-wide text-slate-500 uppercase">
               {formatDateLabel(group.date)}
             </h2>
-            <div className="divide-y divide-slate-100 rounded-2xl bg-white px-4 shadow-sm">
+            <div className="divide-y divide-slate-200">
               {group.items.map((t) => (
                 <TransactionItem
                   key={t.id}

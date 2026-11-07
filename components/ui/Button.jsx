@@ -1,9 +1,9 @@
 import Spinner from '@/components/ui/Spinner'
 
 const variants = {
-  primary: 'bg-teal-600 text-white hover:bg-teal-700 disabled:bg-teal-300',
-  secondary: 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-50 disabled:text-slate-400',
-  danger: 'bg-red-600 text-white hover:bg-red-700 disabled:bg-red-300',
+  primary: 'bg-acc text-on-acc hover:opacity-90 disabled:opacity-50',
+  secondary: 'border border-line text-ink hover:bg-soft disabled:text-slate-400',
+  danger: 'bg-red-600 text-on-acc hover:opacity-90 disabled:opacity-50',
   ghost: 'text-teal-700 hover:bg-teal-50',
 }
 
@@ -20,7 +20,7 @@ export default function Button({
     <button
       type={type}
       disabled={loading || props.disabled}
-      className={`inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition-colors disabled:cursor-not-allowed ${variants[variant]} ${className}`}
+      className={`inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold transition-colors disabled:cursor-not-allowed ${variants[variant]} ${className}`}
       {...props}
     >
       {loading && <Spinner className="h-4 w-4 border-2" />}

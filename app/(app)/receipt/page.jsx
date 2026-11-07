@@ -74,14 +74,14 @@ export default function ReceiptUpload() {
 
   return (
     <div className="flex flex-col gap-4">
-      <h1 className="text-xl font-bold">Scan Struk</h1>
+      <h1 className="text-3xl font-bold tracking-tighter">Scan Struk</h1>
 
-      <div className="rounded-2xl bg-white p-4 shadow-sm">
+      <div className=" py-1">
         {previewUrl ? (
           <div className="relative overflow-hidden rounded-xl bg-slate-100">
             <img src={previewUrl} alt="Pratinjau struk" className="mx-auto max-h-96 object-contain" />
             {parsing && (
-              <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-white/80">
+              <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-surface/80">
                 <Spinner />
                 <p className="text-sm font-medium text-slate-700">Membaca struk...</p>
               </div>

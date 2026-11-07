@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { createWallet, updateWallet } from '@/lib/api/wallets'
 import { useWallets } from '@/hooks/useWallets'
 import { formatRupiah } from '@/utils/formatRupiah'
-import { walletTypeIcon, walletTypeLabel, walletTypes } from '@/utils/labels'
+import { walletTypeLabel, walletTypes } from '@/utils/labels'
 import AmountInput from '@/components/AmountInput'
 import Modal from '@/components/ui/Modal'
 import Button from '@/components/ui/Button'
@@ -107,7 +107,7 @@ export default function Wallets() {
   return (
     <div className="flex flex-col gap-4">
       <div className="flex items-center justify-between">
-        <h1 className="text-xl font-bold">Dompet</h1>
+        <h1 className="text-3xl font-bold tracking-tighter">Dompet</h1>
         <Button onClick={() => openForm({})} className="py-2">
           <Icon name="plus" className="h-4 w-4" /> Tambah
         </Button>
@@ -128,19 +128,16 @@ export default function Wallets() {
           action={<Button onClick={() => openForm({})}>Tambah dompet</Button>}
         />
       ) : (
-        <ul className="flex flex-col gap-3 md:grid md:grid-cols-2">
+        <ul className="divide-y divide-line">
           {wallets.map((wallet) => (
-            <li key={wallet.id} className="flex items-center gap-3 rounded-2xl bg-white p-4 shadow-sm">
-              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-teal-50 text-xl">
-                {walletTypeIcon(wallet.type)}
-              </span>
+            <li key={wallet.id} className="flex items-center gap-3 py-2.5">
               <div className="min-w-0 flex-1">
-                <p className="truncate font-semibold">{wallet.name}</p>
-                <p className="text-xs text-slate-500">{walletTypeLabel(wallet.type)}</p>
-                <p className={`truncate font-bold ${wallet.balance < 0 ? 'text-red-600' : 'text-slate-800'}`}>
-                  {formatRupiah(wallet.balance)}
-                </p>
+                <p className="truncate text-sm font-medium">{wallet.name}</p>
+                <p className="text-xs text-mute">{walletTypeLabel(wallet.type)}</p>
               </div>
+              <p className={`shrink-0 text-sm font-medium ${wallet.balance < 0 ? 'text-red-600' : ''}`}>
+                {formatRupiah(wallet.balance)}
+              </p>
               <button
                 onClick={() => openForm(wallet)}
                 aria-label={`Ubah ${wallet.name}`}
